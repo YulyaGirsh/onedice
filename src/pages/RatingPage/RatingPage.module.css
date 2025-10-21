@@ -1,0 +1,687 @@
+/* 🏆 Страница рейтинга */
+.ratingPage {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0;
+  /* Скрываем скроллбар */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Скрываем скроллбар для WebKit браузеров */
+.ratingPage::-webkit-scrollbar {
+  display: none;
+}
+
+/* Скрываем скроллбар для всех элементов внутри */
+.ratingPage *::-webkit-scrollbar {
+  display: none;
+}
+
+/* 📋 Заголовок страницы */
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1rem 0;
+  will-change: contents;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.trophy {
+  font-size: 32px;
+  filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.3));
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin: 0;
+  font-weight: var(--font-weight-medium);
+}
+
+/* 🎯 Секции */
+.topSection,
+.currentUserSection {
+  margin-bottom: 2rem;
+}
+
+.currentUserSection {
+  position: relative;
+}
+
+.currentUserSection::before {
+  content: '';
+  position: absolute;
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.star,
+.user {
+  font-size: 20px;
+}
+
+/* 📝 Список рейтинга */
+.ratingList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 🎯 Сообщение для новых пользователей */
+.noGamesMessage {
+  text-align: center;
+  padding: 2rem 1rem;
+  margin: 1rem 0;
+}
+
+.noGamesText {
+  font-size: 16px;
+  font-weight: var(--font-weight-medium);
+  color: #ffa500;
+  margin: 0;
+  padding: 16px 20px;
+  background: rgba(255, 165, 0, 0.1);
+  border: 1px solid rgba(255, 165, 0, 0.2);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(255, 165, 0, 0.1);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* 🎴 Карточка рейтинга */
+.ratingCard {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.clickableCard {
+  cursor: pointer;
+}
+
+.clickableCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent-blue);
+}
+
+/* ✨ Текущий пользователь */
+.currentUser {
+  background: linear-gradient(135deg, 
+    rgba(36, 129, 204, 0.1) 0%, 
+    rgba(79, 168, 232, 0.05) 100%);
+  border-color: var(--accent-blue);
+  box-shadow: 0 4px 15px rgba(36, 129, 204, 0.15);
+}
+
+.currentUser:hover {
+  background: linear-gradient(135deg, 
+    rgba(36, 129, 204, 0.15) 0%, 
+    rgba(79, 168, 232, 0.08) 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(36, 129, 204, 0.2);
+}
+
+/* 🥇 Позиция */
+.position {
+  min-width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.positionText {
+  font-size: 18px;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+
+/* 🏆 Значки для призовых мест */
+.positionIcon {
+  font-size: 24px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.goldIcon {
+  color: #ffd700;
+  animation: goldGlow 2s ease-in-out infinite alternate;
+}
+
+.silverIcon {
+  color: #c0c0c0;
+  animation: silverGlow 2s ease-in-out infinite alternate;
+}
+
+.bronzeIcon {
+  color: #cd7f32;
+  animation: bronzeGlow 2s ease-in-out infinite alternate;
+  transform: rotate(180deg);
+}
+
+.positionNumber {
+  font-size: 16px;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-secondary);
+}
+
+/* 📸 Аватар */
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-light-blue));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-full);
+}
+
+.avatarText {
+  font-size: 18px;
+  font-weight: var(--font-weight-bold);
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* 👤 Информация о пользователе */
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.userDetails {
+  flex: 1;
+  min-width: 0;
+}
+
+.username {
+  font-size: 16px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.youLabel {
+  background: rgba(0, 0, 0, 0.08);
+  color: #000000;
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  padding: 2px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  border: 1px solid var(--border-color);
+}
+
+/* Светлая тема (системная) */
+@media (prefers-color-scheme: light) {
+  .youLabel {
+    background: rgba(0, 0, 0, 0.08);
+    color: #000000;
+  }
+}
+
+/* Тёмная тема (системная) */
+@media (prefers-color-scheme: dark) {
+  .youLabel {
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+  }
+}
+
+/* Принудительные темы через data-theme */
+[data-theme="light"] .youLabel {
+  background: rgba(0, 0, 0, 0.08);
+  color: #000000;
+}
+
+[data-theme="dark"] .youLabel {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.stats {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.winRate {
+  color: var(--success);
+  font-weight: var(--font-weight-medium);
+}
+
+/* 📝 Контекстное меню */
+.contextMenu {
+  position: fixed;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 1000;
+  overflow: hidden;
+  min-width: 160px;
+}
+
+.contextMenuItem {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.contextMenuItem:hover {
+  background: var(--accent-blue);
+  color: white;
+}
+
+.contextMenuItem:active {
+  background: var(--accent-dark-blue);
+}
+
+.gamesCount {
+  font-weight: var(--font-weight-medium);
+}
+
+/* 🏅 Рейтинг */
+.ratingSection {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.ratingValue {
+  font-size: 18px;
+  font-weight: var(--font-weight-bold);
+  color: var(--ton-accent);
+  margin-bottom: 2px;
+  text-shadow: 0 1px 2px rgba(255, 215, 0, 0.3);
+}
+
+.ratingLabel {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* 💪 Мотивационный текст */
+.motivationText {
+  margin-top: 1rem;
+  padding: 16px;
+  background: rgba(46, 213, 115, 0.1);
+  border: 1px solid rgba(46, 213, 115, 0.2);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.motivationText p {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.motivationText p:last-child {
+  margin-bottom: 0;
+  color: var(--success);
+}
+
+/* 📱 Адаптивность для мобильных */
+@media (max-width: 768px) {
+  .ratingPage {
+    padding: 0;
+  }
+
+  .header {
+    margin-bottom: 1.5rem;
+    padding: 0.5rem 0;
+  }
+
+  .title {
+    font-size: 24px;
+    gap: 8px;
+  }
+
+  .trophy {
+    font-size: 28px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .ratingCard {
+    padding: 14px;
+    gap: 12px;
+  }
+
+  .position {
+    min-width: 50px;
+  }
+
+  .positionText {
+    font-size: 16px;
+  }
+
+  .avatar {
+    width: 42px;
+    height: 42px;
+  }
+
+  .avatarText {
+    font-size: 16px;
+  }
+
+  .username {
+    font-size: 15px;
+  }
+
+  .stats {
+    font-size: 12px;
+    gap: 8px;
+  }
+
+  .ratingValue {
+    font-size: 16px;
+  }
+
+  .ratingLabel {
+    font-size: 11px;
+  }
+
+  .motivationText {
+    padding: 12px;
+  }
+
+  .motivationText p {
+    font-size: 13px;
+  }
+
+  .noGamesMessage {
+    padding: 1.5rem 0.5rem;
+    margin: 0.5rem 0;
+  }
+
+  .noGamesText {
+    font-size: 14px;
+    padding: 12px 16px;
+  }
+}
+
+/* 🎨 Анимации */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 🏆 Специальные стили для топ-3 */
+.ratingCard:nth-child(1) .avatar {
+  background: linear-gradient(135deg, #ffd700, #ffed4a);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+  /* Постоянное неоновое свечение для золота */
+  animation: goldNeon 2s ease-in-out infinite alternate;
+}
+
+.ratingCard:nth-child(2) .avatar {
+  background: linear-gradient(135deg, #c0c0c0, #e5e5e5);
+  box-shadow: 0 4px 15px rgba(192, 192, 192, 0.3);
+  /* Постоянное неоновое свечение для серебра */
+  animation: silverNeon 2s ease-in-out infinite alternate;
+}
+
+.ratingCard:nth-child(3) .avatar {
+  background: linear-gradient(135deg, #cd7f32, #daa520);
+  box-shadow: 0 4px 15px rgba(205, 127, 50, 0.3);
+  /* Постоянное неоновое свечение для бронзы */
+  animation: bronzeNeon 2s ease-in-out infinite alternate;
+}
+
+/* 🌟 Hover эффекты для топ-3 */
+.ratingCard:nth-child(1):hover {
+  border-color: #ffd700;
+  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
+}
+
+.ratingCard:nth-child(2):hover {
+  border-color: #c0c0c0;
+  box-shadow: 0 8px 25px rgba(192, 192, 192, 0.2);
+}
+
+.ratingCard:nth-child(3):hover {
+  border-color: #cd7f32;
+  box-shadow: 0 8px 25px rgba(205, 127, 50, 0.2);
+}
+
+/* ✨ Анимации для значков призовых мест */
+@keyframes goldGlow {
+  from {
+    filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.3));
+  }
+  to {
+    filter: drop-shadow(0 4px 8px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 12px rgba(255, 215, 0, 0.4));
+  }
+}
+
+@keyframes silverGlow {
+  from {
+    filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.3));
+  }
+  to {
+    filter: drop-shadow(0 4px 8px rgba(192, 192, 192, 0.6)) drop-shadow(0 0 12px rgba(192, 192, 192, 0.4));
+  }
+}
+
+@keyframes bronzeGlow {
+  from {
+    filter: drop-shadow(0 2px 4px rgba(205, 127, 50, 0.3));
+  }
+  to {
+    filter: drop-shadow(0 4px 8px rgba(205, 127, 50, 0.6)) drop-shadow(0 0 12px rgba(205, 127, 50, 0.4));
+  }
+}
+
+/* 🌟 Постоянные неоновые эффекты для призовых мест */
+@keyframes goldNeon {
+  from {
+    box-shadow: 
+      0 4px 15px rgba(255, 215, 0, 0.3),
+      0 0 20px rgba(255, 215, 0, 0.2),
+      0 0 30px rgba(255, 215, 0, 0.1);
+  }
+  to {
+    box-shadow: 
+      0 4px 15px rgba(255, 215, 0, 0.5),
+      0 0 25px rgba(255, 215, 0, 0.4),
+      0 0 40px rgba(255, 215, 0, 0.3);
+  }
+}
+
+@keyframes silverNeon {
+  from {
+    box-shadow: 
+      0 4px 15px rgba(192, 192, 192, 0.3),
+      0 0 20px rgba(192, 192, 192, 0.2),
+      0 0 30px rgba(192, 192, 192, 0.1);
+  }
+  to {
+    box-shadow: 
+      0 4px 15px rgba(192, 192, 192, 0.5),
+      0 0 25px rgba(192, 192, 192, 0.4),
+      0 0 40px rgba(192, 192, 192, 0.3);
+  }
+}
+
+@keyframes bronzeNeon {
+  from {
+    box-shadow: 
+      0 4px 15px rgba(205, 127, 50, 0.3),
+      0 0 20px rgba(205, 127, 50, 0.2),
+      0 0 30px rgba(205, 127, 50, 0.1);
+  }
+  to {
+    box-shadow: 
+      0 4px 15px rgba(205, 127, 50, 0.5),
+      0 0 25px rgba(205, 127, 50, 0.4),
+      0 0 40px rgba(205, 127, 50, 0.3);
+  }
+}
+
+/* 🧪 Секция тестирования */
+.testingSection {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.testingCard {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin-bottom: 1rem;
+}
+
+.testingDescription {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0 0 16px 0;
+  line-height: 1.4;
+}
+
+.testingButtons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.winButton {
+  flex: 1;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #51cf66, #40c057);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(81, 207, 102, 0.3);
+}
+
+.winButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(81, 207, 102, 0.4);
+}
+
+.loseButton {
+  flex: 1;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #ff6b6b, #fa5252);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+}
+
+.loseButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+}
+
+.testingInfo {
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.testingInfo div {
+  margin-bottom: 2px;
+}
+
+.testingInfo div:last-child {
+  margin-bottom: 0;
+}
+
+.test {
+  font-size: 20px;
+}

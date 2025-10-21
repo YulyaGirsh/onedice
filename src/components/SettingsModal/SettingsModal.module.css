@@ -1,0 +1,551 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  align-items: flex-end; /* Выравниваем по низу */
+  justify-content: center;
+  z-index: 9999;
+  animation: modalFadeIn 0.3s ease-out;
+  /* 🚫 Блокируем скролл при открытой модалке */
+  overflow: hidden;
+}
+
+.modal.fadeOut {
+  animation: modalFadeOut 0.3s ease-out forwards;
+}
+
+.content {
+  background: rgba(20, 20, 20, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #ffffff;
+  padding: 24px 32px;
+  border-radius: 20px 20px 0 0; /* Скругление только сверху */
+  max-width: 100%;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 -20px 40px rgba(0, 0, 0, 0.5);
+  animation: slideUpFromBottom 0.3s ease-out;
+  /* 📱 Максимальная высота для мобильных */
+  max-height: 90vh;
+  max-height: 90dvh;
+  overflow-y: auto;
+  /* 🚫 Убираем скроллбар */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  position: relative; /* для кнопки закрытия сверху справа */
+}
+
+.content::-webkit-scrollbar {
+  display: none;
+}
+
+.content.dark {
+  background: rgba(20, 20, 20, 0.98);
+  color: #ffffff;
+}
+
+.content.light {
+  background: rgba(248, 249, 250, 0.98);
+  color: #1a1a2e;
+}
+
+.imageWrapper {
+  height: 160px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.image {
+  height: 140px;
+  width: auto;
+  display: block;
+  color: var(--color-primary-button-bg);
+}
+
+.textContent {
+  text-align: center;
+  padding: 10px 0;
+  padding-left: 0;
+}
+
+.title {
+  font-size: 22px;
+  margin-bottom: 12px;
+  margin-top: -8px;
+  color: inherit;
+  font-weight: 600;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feature {
+  margin: 6px 0;
+  font-size: 16px;
+  line-height: 1.4;
+  color: inherit;
+}
+
+.section {
+  margin: 16px 0;
+  text-align: left;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.dark .sectionTitle {
+  color: #ffffff;
+}
+
+.light .sectionTitle {
+  color: #1a1a2e;
+}
+
+.walletSection {
+  margin-bottom: 16px;
+}
+
+.walletConnectInSettings {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.connectedWallet {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.dark .connectedWallet {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.light .connectedWallet {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.walletInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.walletIcon {
+  color: var(--color-primary-button-bg);
+  display: flex;
+  align-items: center;
+}
+
+.walletDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.walletName {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.dark .walletName {
+  color: #ffffff;
+}
+
+.light .walletName {
+  color: #1a1a2e;
+}
+
+.walletAddress {
+  font-size: 12px;
+}
+
+.dark .walletAddress {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.light .walletAddress {
+  color: rgba(26, 26, 46, 0.7);
+}
+
+.disconnectBtn {
+  background: rgba(255, 59, 48, 0.1);
+  border: 1px solid rgba(255, 59, 48, 0.3);
+  color: #ff3b30;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.disconnectBtn:hover {
+  background: rgba(255, 59, 48, 0.2);
+}
+
+.balanceDisplay {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.dark .balanceDisplay {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.light .balanceDisplay {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.balanceLabel {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.dark .balanceLabel {
+  color: #ffffff;
+}
+
+.light .balanceLabel {
+  color: #1a1a2e;
+}
+
+.optionsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.optionButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 12px;
+}
+
+.dark .optionButton {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.light .optionButton {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #1a1a2e;
+}
+
+.dark .optionButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.light .optionButton:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.optionButton.selected {
+  background: rgba(36, 129, 204, 0.2);
+  border-color: var(--color-primary-button-bg);
+  color: var(--color-primary-button-bg);
+}
+
+.optionIcon {
+  font-size: 20px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.optionName {
+  font-size: 11px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.appInfo {
+  text-align: center;
+  margin-top: 8px;
+}
+
+.appVersion {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.dark .appVersion {
+  color: #ffffff;
+}
+
+.light .appVersion {
+  color: #1a1a2e;
+}
+
+.appDescription {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.dark .appDescription {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.light .appDescription {
+  color: rgba(26, 26, 46, 0.7);
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.closeButton {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+}
+
+.dark .closeButton {
+  background: var(--color-primary-button-bg);
+  color: var(--color-primary-button-text);
+}
+
+.light .closeButton {
+  background: var(--color-primary-button-bg);
+  color: var(--color-primary-button-text);
+}
+
+.dark .closeButton:hover {
+  opacity: 0.9;
+}
+
+.light .closeButton:hover {
+  opacity: 0.9;
+}
+
+.buttonText {
+  transition: all 0.3s ease;
+}
+
+/* Новая компактная раскладка для инлайн-кнопок (язык/темы) */
+.inlineButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.inlineButton {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 12px;
+}
+
+.dark .inlineButton {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.light .inlineButton {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #1a1a2e;
+}
+
+.dark .inlineButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.light .inlineButton:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.inlineButton.selected {
+  background: rgba(36, 129, 204, 0.2);
+  border-color: var(--color-primary-button-bg);
+  color: var(--color-primary-button-bg);
+}
+
+.iconSvg {
+  width: 20px;
+  height: 20px;
+  color: currentColor; /* завязан на тему */
+}
+
+/* Кнопка закрытия сверху справа */
+.closeTopButton {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.closeTopButton:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.closeTopButton:active {
+  transform: scale(0.95);
+}
+
+.actionButtons {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.actionButton {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 12px;
+}
+
+.dark .actionButton {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.light .actionButton {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #1a1a2e;
+}
+
+.dark .actionButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.light .actionButton:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.actionButton span {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* 📱 Адаптация для мобильных устройств */
+@media (max-width: 768px) {
+  .content {
+    padding: 20px 24px;
+    border-radius: 16px 16px 0 0;
+    max-height: 85vh;
+    max-height: 85dvh;
+  }
+  
+  .optionsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 📱 Адаптация для очень маленьких экранов */
+@media (max-width: 320px) {
+  .content {
+    padding: 16px 20px;
+    border-radius: 12px 12px 0 0;
+    max-height: 80vh;
+    max-height: 80dvh;
+  }
+  
+  .optionsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Анимации */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideUpFromBottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+} 

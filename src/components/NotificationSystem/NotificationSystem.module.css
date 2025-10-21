@@ -1,0 +1,197 @@
+/* Контейнер для уведомлений */
+.notificationContainer {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: none;
+}
+
+/* Основной стиль уведомления */
+.notification {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-width: 300px;
+  max-width: 400px;
+  cursor: pointer;
+  pointer-events: auto;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Анимация появления */
+.notification.visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* Анимация исчезновения */
+.notification.removing {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+/* Типы уведомлений */
+.notification.info {
+  background: linear-gradient(135deg, 
+    rgba(59, 130, 246, 0.9) 0%, 
+    rgba(37, 99, 235, 0.8) 100%);
+  border-color: rgba(59, 130, 246, 0.3);
+  color: white;
+}
+
+.notification.warning {
+  background: linear-gradient(135deg, 
+    rgba(245, 158, 11, 0.9) 0%, 
+    rgba(217, 119, 6, 0.8) 100%);
+  border-color: rgba(245, 158, 11, 0.3);
+  color: white;
+}
+
+.notification.success {
+  background: linear-gradient(135deg, 
+    rgba(34, 197, 94, 0.9) 0%, 
+    rgba(22, 163, 74, 0.8) 100%);
+  border-color: rgba(34, 197, 94, 0.3);
+  color: white;
+}
+
+.notification.error {
+  background: linear-gradient(135deg, 
+    rgba(239, 68, 68, 0.9) 0%, 
+    rgba(220, 38, 38, 0.8) 100%);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: white;
+}
+
+/* Иконка уведомления */
+.notificationIcon {
+  font-size: 24px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Контент уведомления */
+.notificationContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.notificationMessage {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+/* Кнопка закрытия */
+.notificationClose {
+  font-size: 20px;
+  font-weight: bold;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.notificationClose:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Эффект при наведении */
+.notification:hover {
+  transform: translateX(-5px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.notification.removing:hover {
+  transform: translateX(100%);
+}
+
+/* Прогресс-бар (опционально) */
+.notification::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.6);
+  animation: progressBar 2s linear forwards;
+}
+
+@keyframes progressBar {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .notificationContainer {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+  }
+
+  .notification {
+    min-width: auto;
+    max-width: none;
+    padding: 14px 16px;
+  }
+
+  .notificationMessage {
+    font-size: 13px;
+  }
+
+  .notificationIcon {
+    font-size: 20px;
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Анимация пульсации для важных уведомлений */
+.notification.warning,
+.notification.error {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  }
+}

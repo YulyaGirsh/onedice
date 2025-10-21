@@ -1,0 +1,15 @@
+{
+  "url": "https://sosaaaal-da.cloudpub.ru",
+  "name": "Dice Game TON",
+  "iconUrl": "https://sosaaaal-da.cloudpub.ru/icon.svg",
+  "termsOfUseUrl": "https://sosaaaal-da.cloudpub.ru/terms",
+  "privacyPolicyUrl": "https://sosaaaal-da.cloudpub.ru/privacy",
+  "features": [
+    {
+      "name": "ton_addr"
+    },
+    {
+      "name": "ton_proof"
+    }
+  ]
+} 

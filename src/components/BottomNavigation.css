@@ -1,0 +1,478 @@
+/* Новая нижняя навигация с активными индикаторами */
+.navbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-sizing: border-box;
+  background: rgba(26, 26, 46, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 20px;
+  /* Включаем safe-bottom в height (см. ниже), поэтому тут только визуальный отступ */
+  padding-bottom: 12px;
+  padding-left: calc(var(--safe-left) + 20px);
+  padding-right: calc(var(--safe-right) + 20px);
+  z-index: 1000;
+  height: calc(80px + var(--safe-bottom));
+  transition: padding 0.25s ease, height 0.25s ease, background-color 0.2s ease; /* сглаживаем рывки */
+}
+
+.tabs {
+  position: relative; /* Для позиционирования индикатора относительно tabs */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 8px;
+  max-width: 400px; /* Фиксированная ширина для точного позиционирования индикатора */
+  margin: 0 auto;
+}
+
+/* Плавающий индикатор на бордере меню */
+/* Теперь позиционируется относительно реальных позиций кнопок через JavaScript */
+.floating-indicator {
+  position: absolute;
+  top: -14px; /* Выше контейнера tabs, чтобы быть на бордере navbar */
+  width: 32px; /* Намного уже - примерно в 2 раза уже кнопки */
+  height: 4px; /* Чуть выше для лучшей видимости */
+  background: linear-gradient(90deg, #ffffff, #f0f0f0);
+  border-radius: 0 0 3px 3px; /* Только снизу, чтобы выглядело как часть бордера */
+  transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1); /* немного быстрее и мягче */
+  z-index: 1001; /* Выше меню */
+  box-shadow: 0 2px 12px rgba(255, 255, 255, 0.6); /* Яркое свечение */
+}
+
+.tab {
+  position: relative;
+  flex: 1;
+  height: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 20px; /* Увеличено с 16px до 20px для более округлого вида */
+  padding: 8px 4px;
+  min-width: 70px;
+}
+
+.tab:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-1px);
+}
+
+.tab.active {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.tab.active .wrapper svg {
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.tab.active .tab-label {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-bottom: 4px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wrapper svg {
+  width: 24px;
+  height: 24px;
+  color: rgba(255, 255, 255, 0.6);
+  fill: rgba(255, 255, 255, 0.6);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wrapper svg path {
+  fill: rgba(255, 255, 255, 0.6);
+}
+
+.tab:hover .wrapper svg path {
+  fill: rgba(255, 255, 255, 0.8);
+}
+
+.tab.active .wrapper svg path {
+  fill: #ffffff;
+}
+
+/* Стили для иконки кубика */
+.dice-icon {
+  width: 24px;
+  height: 24px;
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab:hover .dice-icon {
+  color: rgba(255, 255, 255, 0.8);
+  transform: scale(1.05);
+}
+
+.tab.active .dice-icon {
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.tab-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+}
+
+.tab:hover .tab-label {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Анимации нажатия */
+.tab:active {
+  transform: scale(0.95) translateY(-1px);
+}
+
+.tab:active .wrapper svg {
+  transform: scale(0.9);
+}
+
+/* Плавные переходы для улучшения производительности */
+.tab,
+.wrapper,
+.wrapper svg,
+.tab-label,
+.floating-indicator {
+  will-change: transform, color, left;
+}
+
+/* Адаптация для очень маленьких экранов */
+@media (max-width: 320px) {
+  .tabs {
+    gap: 4px;
+  }
+  
+  .tab {
+    min-width: 60px;
+    padding: 6px 2px;
+    border-radius: 18px; /* Пропорционально уменьшено для маленьких экранов */
+  }
+  
+  .tab-label {
+    font-size: 10px;
+  }
+  
+  .wrapper svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .floating-indicator {
+    width: 24px; /* Еще уже для маленьких экранов */
+    height: 3px;
+  }
+}
+
+/* 🌞 Стили для светлой темы */
+@media (prefers-color-scheme: light) {
+  .navbar {
+    background: rgba(255, 255, 255, 0.98);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .floating-indicator {
+    background: linear-gradient(90deg, #000000, #333333);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  }
+
+  .tab:hover {
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  .tab.active {
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+  }
+
+  .tab.active .wrapper svg {
+    color: #000000 !important;
+    fill: #000000 !important;
+  }
+
+  .tab.active .tab-label {
+    color: #000000;
+  }
+
+  .tab.active .dice-icon {
+    color: #000000;
+  }
+
+  .wrapper svg {
+    color: rgba(0, 0, 0, 0.6) !important;
+    fill: rgba(0, 0, 0, 0.6) !important;
+  }
+
+  .tab:hover .wrapper svg {
+    color: rgba(0, 0, 0, 0.8) !important;
+    fill: rgba(0, 0, 0, 0.8) !important;
+  }
+
+  .wrapper svg path {
+    fill: rgba(0, 0, 0, 0.6) !important;
+  }
+
+  .tab:hover .wrapper svg path {
+    fill: rgba(0, 0, 0, 0.8) !important;
+  }
+
+  .tab.active .wrapper svg path {
+    fill: #000000 !important;
+  }
+
+  .dice-icon {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .tab:hover .dice-icon {
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .tab-label {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .tab:hover .tab-label {
+    color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+/* 🌙 Стили для темной темы */
+@media (prefers-color-scheme: dark) {
+  .navbar {
+    background: rgba(0, 0, 0, 0.98);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .floating-indicator {
+    background: linear-gradient(90deg, #ffffff, #f0f0f0);
+    box-shadow: 0 2px 12px rgba(255, 255, 255, 0.6);
+  }
+
+  .tab:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .tab.active {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .tab.active .wrapper svg {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+  }
+
+  .tab.active .tab-label {
+    color: #ffffff !important;
+  }
+
+  .tab.active .dice-icon {
+    color: #ffffff;
+  }
+
+  .wrapper svg {
+    color: rgba(255, 255, 255, 0.6) !important;
+    fill: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  .tab:hover .wrapper svg {
+    color: rgba(255, 255, 255, 0.8) !important;
+    fill: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  .wrapper svg path {
+    fill: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  .tab:hover .wrapper svg path {
+    fill: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  .tab.active .wrapper svg path {
+    fill: #ffffff !important;
+  }
+
+  .dice-icon {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .tab:hover .dice-icon {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .tab-label {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  .tab:hover .tab-label {
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+}
+
+/* 🎨 Принудительная темная тема */
+[data-theme="dark"] {
+  .navbar {
+    background: rgba(0, 0, 0, 0.98);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .floating-indicator {
+    background: linear-gradient(90deg, #ffffff, #f0f0f0);
+    box-shadow: 0 2px 12px rgba(255, 255, 255, 0.6);
+  }
+
+  .tab:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .tab.active {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .tab.active .wrapper svg {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+  }
+
+  .tab.active .tab-label {
+    color: #ffffff !important;
+  }
+
+  .tab.active .dice-icon {
+    color: #ffffff;
+  }
+
+  .wrapper svg {
+    color: rgba(255, 255, 255, 0.6) !important;
+    fill: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  .tab:hover .wrapper svg {
+    color: rgba(255, 255, 255, 0.8) !important;
+    fill: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  .wrapper svg path {
+    fill: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  .tab:hover .wrapper svg path {
+    fill: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  .tab.active .wrapper svg path {
+    fill: #ffffff !important;
+  }
+
+  .dice-icon {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .tab:hover .dice-icon {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .tab-label {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  .tab:hover .tab-label {
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+}
+
+/* 🎨 Принудительная светлая тема */
+[data-theme="light"] {
+  .navbar {
+    background: rgba(255, 255, 255, 0.98);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .floating-indicator {
+    background: linear-gradient(90deg, #000000, #333333);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  }
+
+  .tab:hover {
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  .tab.active {
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+  }
+
+  .tab.active .wrapper svg {
+    color: #000000 !important;
+    fill: #000000 !important;
+  }
+
+  .tab.active .tab-label {
+    color: #000000;
+  }
+
+  .tab.active .dice-icon {
+    color: #000000;
+  }
+
+  .wrapper svg {
+    color: rgba(0, 0, 0, 0.6) !important;
+    fill: rgba(0, 0, 0, 0.6) !important;
+  }
+
+  .tab:hover .wrapper svg {
+    color: rgba(0, 0, 0, 0.8) !important;
+    fill: rgba(0, 0, 0, 0.8) !important;
+  }
+
+  .wrapper svg path {
+    fill: rgba(0, 0, 0, 0.6) !important;
+  }
+
+  .tab:hover .wrapper svg path {
+    fill: rgba(0, 0, 0, 0.8) !important;
+  }
+
+  .tab.active .wrapper svg path {
+    fill: #000000 !important;
+  }
+
+  .dice-icon {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .tab:hover .dice-icon {
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .tab-label {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .tab:hover .tab-label {
+    color: rgba(0, 0, 0, 0.8);
+  }
+}

@@ -1,0 +1,555 @@
+.profileHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 54px;
+  padding: 0 16px;
+  overflow: hidden;
+  /* 🎨 Добавляем backdrop-filter как у навигации */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  /* 📱 Safe areas отступы */
+  padding-top: var(--safe-top);
+  padding-left: calc(var(--safe-left) + 16px);
+  padding-right: calc(var(--safe-right) + 16px);
+  /* 🎯 Z-index для правильного отображения */
+  z-index: 999;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* Темная тема */
+.profileHeader.dark {
+  background: rgba(0, 0, 0, 0.98);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Светлая тема */
+.profileHeader.light {
+  background: rgba(255, 255, 255, 0.98);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Принудительная темная тема */
+[data-theme="dark"] .profileHeader {
+  background: rgba(0, 0, 0, 0.98);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .profileName {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .profileRating {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .profileBalance {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .balanceTonIcon {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .balanceValue {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .balanceAddIcon {
+  color: #ffffff;
+  opacity: 1;
+}
+
+[data-theme="dark"] .profileMenuBtn {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .profileMenuBtn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* Принудительная светлая тема */
+[data-theme="light"] .profileHeader {
+  background: rgba(255, 255, 255, 0.98);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .profileName {
+  color: #1a1a2e;
+}
+
+[data-theme="light"] .profileRating {
+  color: #666666;
+}
+
+[data-theme="light"] .profileBalance {
+  color: #1a1a2e;
+}
+
+[data-theme="light"] .balanceTonIcon {
+  color: #1a1a2e;
+}
+
+[data-theme="light"] .balanceValue {
+  color: #1a1a2e;
+}
+
+[data-theme="light"] .balanceAddIcon {
+  background: transparent;
+  color: #000000;
+  opacity: 1;
+}
+
+[data-theme="light"] .profileMenuBtn {
+  background: rgba(0, 0, 0, 0.25);
+  color: #000000;
+}
+
+[data-theme="light"] .profileMenuBtn:hover {
+  background: rgba(0, 0, 0, 0.35);
+  transform: scale(1.05);
+}
+
+/* Системная темная тема */
+@media (prefers-color-scheme: dark) {
+  .profileHeader {
+    background: rgba(0, 0, 0, 0.98);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  
+  .profileName {
+    color: #ffffff;
+  }
+  
+  .profileRating {
+    color: #ffffff;
+  }
+  
+  .profileBalance {
+    color: #ffffff;
+  }
+  
+  .balanceTonIcon {
+    color: #ffffff;
+  }
+  
+  .balanceValue {
+    color: #ffffff;
+  }
+  
+  .balanceAddIcon {
+    color: #ffffff;
+  }
+  
+  .profileMenuBtn {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+}
+
+/* Системная светлая тема */
+@media (prefers-color-scheme: light) {
+  .profileHeader {
+    background: rgba(255, 255, 255, 0.98);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  
+  .profileName {
+    color: #1a1a2e;
+  }
+  
+  .profileRating {
+    color: #666666;
+  }
+  
+  .profileBalance {
+    color: #1a1a2e;
+  }
+  
+  .balanceTonIcon {
+    color: #1a1a2e;
+  }
+  
+  .balanceValue {
+    color: #1a1a2e;
+  }
+  
+  .balanceAddIcon {
+    color: #000000;
+  }
+  
+  .profileMenuBtn {
+    background: rgba(0, 0, 0, 0.25);
+    color: #000000;
+  }
+}
+
+.profileLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+.profileAvatar {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 50%;
+  background: var(--color-primary-button-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: var(--shadow-light);
+  overflow: hidden;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.profileAvatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.avatarImg {
+  width: 34px !important;
+  height: 34px !important;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.avatarFallback {
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+}
+
+.profileName {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+}
+
+.dark .profileName {
+  color: #ffffff;
+}
+
+.light .profileName {
+  color: #1a1a2e;
+}
+
+.profileRating {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+}
+
+.dark .profileRating {
+  color: #ffffff;
+}
+
+.light .profileRating {
+  color: #666666;
+}
+
+.profileRight {
+  display: flex;
+  gap: 12px;
+  height: 34px;
+  align-self: center;
+  margin: 0;
+  padding: 0;
+}
+
+.walletConnect {
+  display: flex;
+  align-items: center;
+}
+
+.profileBalance {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+}
+
+.dark .profileBalance {
+  color: #ffffff;
+}
+
+.light .profileBalance {
+  color: #1a1a2e;
+}
+
+.balanceContainer {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.balanceTonIcon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.dark .balanceTonIcon {
+  color: #ffffff;
+}
+
+.light .balanceTonIcon {
+  color: #1a1a2e;
+}
+
+.balanceValue {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+}
+
+.dark .balanceValue {
+  color: #ffffff;
+}
+
+.light .balanceValue {
+  color: #1a1a2e;
+}
+
+.balanceAddIcon {
+  width: 24px !important;
+  height: 24px !important;
+  flex-shrink: 0;
+  opacity: 1;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+.dark .balanceAddIcon {
+  color: #ffffff;
+}
+
+.light .balanceAddIcon {
+  color: #000000;
+}
+
+.balanceAddIcon:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.profileMenuBtn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dark .profileMenuBtn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.light .profileMenuBtn {
+  background: rgba(0, 0, 0, 0.25);
+  color: #000000;
+}
+
+.light .profileMenuBtn:hover {
+  background: rgba(0, 0, 0, 0.35);
+  transform: scale(1.05);
+}
+
+.profileMenuBtn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.dark .profileMenuBtn:hover {
+  background: #ffffff;
+  color: #000000;
+  transform: scale(1.05);
+}
+
+.light .profileMenuBtn:hover {
+  background: rgba(0, 0, 0, 0.25);
+  transform: scale(1.05);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .profileHeader {
+    height: 54px;
+    padding: 0 12px;
+    padding-right: 8px;
+  }
+  
+  .profileLeft {
+    gap: 10px;
+  }
+  
+  .profileAvatar {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 13px;
+  }
+  
+  .avatarImg {
+    width: 30px !important;
+    height: 30px !important;
+  }
+  
+  .avatarFallback {
+    font-size: 13px;
+  }
+  
+  .profileName {
+    font-size: 13px;
+  }
+  
+  .profileRating {
+    font-size: 11px;
+  }
+  
+  .profileRight {
+    gap: 10px;
+  }
+  
+  .profileBalance {
+    height: 30px;
+    padding: 0 6px;
+    gap: 3px;
+  }
+  
+  .balanceTonIcon {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .balanceValue {
+    font-size: 12px;
+  }
+  
+  .balanceAddIcon {
+    width: 14px !important;
+    height: 14px !important;
+  }
+  
+  .profileMenuBtn {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .profileMenuBtn svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Адаптивность для поворота экрана */
+@media (orientation: landscape) and (max-height: 500px) {
+  .profileHeader {
+    height: 54px;
+    padding: 0 10px;
+    padding-right: 6px;
+  }
+  
+  .profileLeft {
+    gap: 8px;
+  }
+  
+  .profileAvatar {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 11px;
+  }
+  
+  .avatarImg {
+    width: 26px !important;
+    height: 26px !important;
+  }
+  
+  .avatarFallback {
+    font-size: 11px;
+  }
+  
+  .profileName {
+    font-size: 12px;
+  }
+  
+  .profileRating {
+    font-size: 10px;
+  }
+  
+  .profileRight {
+    gap: 8px;
+  }
+  
+  .profileBalance {
+    height: 26px;
+    padding: 0 5px;
+    gap: 2px;
+  }
+  
+  .balanceTonIcon {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .balanceValue {
+    font-size: 11px;
+  }
+  
+  .balanceAddIcon {
+    width: 14px !important;
+    height: 14px !important;
+  }
+  
+  .profileMenuBtn {
+    width: 26px;
+    height: 26px;
+  }
+  
+  .profileMenuBtn svg {
+    width: 14px;
+    height: 14px;
+  }
+}

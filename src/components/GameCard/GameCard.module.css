@@ -1,0 +1,148 @@
+.gameCard {
+  background: var(--color-game-card-bg);
+  border: 1px solid var(--color-game-card-border);
+  border-radius: 16px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.gameCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-game-card);
+  border-color: var(--color-primary-button-bg);
+}
+
+.gameHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.gameCreator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.creatorName {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color-secondary);
+  font-family: var(--font-primary);
+}
+
+.gameType {
+  font-size: 12px;
+  padding: 4px 8px;
+  background: var(--color-primary-button-bg);
+  color: var(--color-primary-button-text);
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.gameDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.gamePrice {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tonIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: var(--color-ton-accent);
+}
+
+.priceValue {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-ton-accent);
+}
+
+.gamePlayers {
+  font-size: 13px;
+  color: var(--text-color-secondary);
+  font-weight: 500;
+}
+
+.gameJoinBtn {
+  width: 100%;
+  height: 44px;
+  border: none;
+  border-radius: 12px;
+  background: var(--color-primary-button-bg);
+  color: var(--color-primary-button-text);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-light);
+}
+
+.gameJoinBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+}
+
+.gameJoinBtn:disabled {
+  background: var(--color-divider);
+  color: var(--text-color-secondary);
+  cursor: not-allowed;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .gameCard {
+    padding: 14px;
+  }
+}
+
+.gameHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.deleteBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-color-secondary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.deleteBtn:hover {
+  background: rgba(255, 0, 0, 0.08);
+  color: #ff5a5f;
+}
+
+.trashIcon {
+  width: 18px;
+  height: 18px;
+  display: block;
+}

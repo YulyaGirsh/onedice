@@ -1,0 +1,351 @@
+/* Modal Overlay */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100dvh;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 10000;
+  overflow: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.modal.fadeOut {
+  opacity: 0;
+}
+
+/* Modal Content */
+.content {
+  background: var(--secondary-bg);
+  backdrop-filter: blur(20px);
+  border-radius: 20px 20px 0 0;
+  padding: 24px;
+  max-height: 90dvh;
+  width: 100%;
+  max-width: 400px;
+  overflow-y: auto;
+  animation: slideUpFromBottom 0.3s ease;
+  position: relative;
+}
+
+.content.dark {
+  background: var(--secondary-bg);
+  color: var(--text-primary);
+}
+
+.content.light {
+  background: var(--secondary-bg);
+  color: var(--text-primary);
+}
+
+/* Image Wrapper */
+.imageWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.image {
+  color: var(--accent-blue);
+  width: 64px;
+  height: 64px;
+}
+
+/* Text Content */
+.textContent {
+  text-align: center;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  line-height: 1.2;
+}
+
+.dark .title {
+  color: var(--text-primary);
+}
+
+.light .title {
+  color: var(--text-primary);
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.feature {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.dark .feature {
+  color: var(--text-secondary);
+}
+
+.light .feature {
+  color: var(--text-secondary);
+}
+
+/* Balance Info */
+.balanceInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.dark .balanceInfo {
+  background: var(--card-bg);
+}
+
+.light .balanceInfo {
+  background: var(--card-bg);
+}
+
+.balanceInfo span {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.dark .balanceInfo span {
+  color: var(--text-primary);
+}
+
+.light .balanceInfo span {
+  color: var(--text-primary);
+}
+
+/* Input Container */
+.inputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+}
+
+.dark .inputContainer {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+}
+
+.light .inputContainer {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+}
+
+.amountInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  font-weight: 500;
+  outline: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dark .amountInput {
+  color: var(--text-primary);
+}
+
+.light .amountInput {
+  color: var(--text-primary);
+}
+
+.dark .amountInput::placeholder {
+  color: var(--text-secondary);
+}
+
+.light .amountInput::placeholder {
+  color: var(--text-secondary);
+}
+
+.amountInput::-webkit-outer-spin-button,
+.amountInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.amountInput[type=number] {
+  -moz-appearance: textfield;
+}
+
+.tonIcon {
+  display: flex;
+  align-items: center;
+  color: var(--accent-blue);
+  margin-left: 8px;
+}
+
+/* Max Button */
+.maxButton {
+  background: rgba(0, 136, 204, 0.1);
+  border: 1px solid rgba(0, 136, 204, 0.3);
+  border-radius: 8px;
+  color: var(--accent-blue);
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 16px;
+}
+
+.maxButton:hover {
+  background: rgba(0, 136, 204, 0.2);
+  border-color: rgba(0, 136, 204, 0.5);
+}
+
+/* Error Message */
+.errorMessage {
+  color: #ff6b6b;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 107, 107, 0.2);
+}
+
+/* Button Container */
+.buttonContainer {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.closeButton {
+  flex: 1;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dark .closeButton {
+  background: var(--color-secondary-button-bg);
+  border: 1px solid var(--border-color);
+  color: var(--color-secondary-button-text);
+}
+
+.light .closeButton {
+  background: var(--color-secondary-button-bg);
+  border: 1px solid var(--border-color);
+  color: var(--color-secondary-button-text);
+}
+
+.dark .closeButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.light .closeButton:hover {
+  background: rgba(0, 0, 0, 0.12);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.withdrawButton {
+  flex: 1;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dark .withdrawButton {
+  background: var(--color-primary-button-bg);
+  color: var(--color-primary-button-text);
+}
+
+.light .withdrawButton {
+  background: var(--color-primary-button-bg);
+  color: var(--color-primary-button-text);
+}
+
+.dark .withdrawButton:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.light .withdrawButton:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.dark .withdrawButton:disabled {
+  background: var(--color-secondary-button-bg);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.light .withdrawButton:disabled {
+  background: var(--color-secondary-button-bg);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.buttonText {
+  display: block;
+  text-align: center;
+}
+
+/* Animation */
+@keyframes slideUpFromBottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 📱 Адаптация для мобильных устройств */
+@media (max-width: 480px) {
+  .content {
+    padding: 20px;
+    border-radius: 16px 16px 0 0;
+  }
+  
+  .title {
+    font-size: 22px;
+  }
+  
+  .feature {
+    font-size: 15px;
+  }
+  
+  .buttonContainer {
+    flex-direction: column;
+  }
+  
+  .closeButton,
+  .withdrawButton {
+    padding: 16px 20px;
+  }
+}
+
+/* Удалены дублирующие медиа-правила в пользу CSS-переменных темы */

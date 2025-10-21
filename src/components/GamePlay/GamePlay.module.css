@@ -1,0 +1,661 @@
+.gameContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  background: var(--color-base-bg);
+  color: var(--text-color-primary);
+  padding: 0; /* убрали внутренние отступы, чтобы фон занимал весь экран без черных полей */
+  position: relative;
+  overflow: hidden;
+}
+
+@supports not (min-height: 100svh) { .gameContainer { min-height: 100vh; } }
+
+.gameContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, var(--accent-blue) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, var(--text-color-primary) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, var(--accent-light-blue) 0%, transparent 50%);
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+/* Заголовок */
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+  padding: 16px 16px 0 16px; /* внутренний отступ только для читаемости */
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  color: var(--text-color-primary);
+  text-shadow: var(--shadow-sm);
+}
+
+.gameInfo {
+  background: var(--color-game-card-bg);
+  border-radius: 12px;
+  padding: 8px 16px;
+  display: inline-block;
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--color-game-card-border);
+  font-weight: 600;
+  color: var(--text-color-primary);
+}
+
+/* Подготовка */
+.preparingSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  padding: 0 16px; /* внутренний отступ для читаемости */
+}
+
+.preparingIcon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.preparingSection h2 {
+  font-size: 24px;
+  margin: 0 0 12px 0;
+  color: var(--text-color-primary);
+  font-weight: 600;
+}
+
+.preparingSection p {
+  font-size: 16px;
+  opacity: 0.8;
+  margin: 0;
+}
+
+/* Бросок кубиков */
+.rollingSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  z-index: 1;
+  padding: 60px 16px 0 16px; /* увеличили верхний отступ */
+}
+
+.countdownContainer {
+  text-align: center;
+  position: relative;
+  z-index: 15; /* выше кубика */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 350px;
+  margin-top: 90px;
+}
+
+.countdownNumber {
+  font-size: 180px;
+  font-weight: 900;
+  margin-bottom: 20px;
+  color: var(--text-color-primary);
+  text-shadow: var(--shadow-lg);
+  animation: countdownPulse 1s ease-in-out;
+  filter: drop-shadow(0 0 15px var(--accent-blue));
+  order: 1;
+}
+
+@keyframes countdownPulse {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.countdownText {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-color-secondary);
+  opacity: 0.9;
+  order: 2;
+  margin-top: 50px;
+}
+
+.tieMessage {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffd700;
+}
+
+/* Анимация кубика */
+.diceAnimation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5; /* ниже обратного отсчета */
+}
+
+.dice {
+  font-size: 120px;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.diceAnimating {
+  animation: diceRoll 0.5s ease-in-out infinite;
+}
+
+@keyframes diceRoll {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(90deg) scale(1.1); }
+  50% { transform: rotate(180deg) scale(1.2); }
+  75% { transform: rotate(270deg) scale(1.1); }
+}
+
+/* Результаты игроков */
+.playersSection {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  padding: 60px 16px 0 16px; /* увеличили верхний отступ для опускания секции ниже */
+  margin-top: 80px;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 30px 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.playersGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.playerResult {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.playerResult.winner {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 193, 7, 0.2));
+  border-color: #ffd700;
+  box-shadow: 0 8px 32px rgba(255, 215, 0, 0.3);
+  transform: scale(1.05);
+}
+
+.playerName {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  opacity: 0.9;
+}
+
+.playerResult .dice {
+  font-size: 60px;
+  margin: 12px 0;
+}
+
+.diceValue {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.winnerBadge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #ffd700, #ffb347);
+  color: #333;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+  white-space: nowrap;
+}
+
+/* Рейтинг: всплывающая анимация +15/-15 */
+.ratingDelta {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 22px;
+  font-weight: 900;
+  color: #00e676;
+  opacity: 0;
+  animation: riseFade 1.6s ease-out forwards;
+  pointer-events: none;
+  text-shadow: 0 0 12px rgba(0, 230, 118, 0.8), 0 2px 8px rgba(0,0,0,0.6);
+  filter: drop-shadow(0 0 8px rgba(0, 230, 118, 0.6));
+}
+
+.ratingDelta.negative {
+  color: #ff1744;
+  text-shadow: 0 0 12px rgba(255, 23, 68, 0.8), 0 2px 8px rgba(0,0,0,0.6);
+  filter: drop-shadow(0 0 8px rgba(255, 23, 68, 0.6));
+}
+
+@keyframes riseFade {
+  0% { transform: translate(-50%, 8px) scale(0.8); opacity: 0; }
+  15% { transform: translate(-50%, 0) scale(1.2); opacity: 1; }
+  30% { transform: translate(-50%, -8px) scale(1); opacity: 1; }
+  85% { transform: translate(-50%, -20px) scale(1); opacity: 0.9; }
+  100% { transform: translate(-50%, -32px) scale(0.95); opacity: 0; }
+}
+
+/* Финальный экран */
+.finishedSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  padding: 16px; /* внутренний отступ для доступности кнопок */
+  padding-bottom: 30px; /* дополнительный отступ снизу для кнопки "Играть снова" */
+}
+
+.winnerAnnouncement {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.winnerIcon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  animation: celebration 2s ease-in-out infinite;
+}
+
+@keyframes celebration {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.1) rotate(-5deg); }
+  75% { transform: scale(1.1) rotate(5deg); }
+}
+
+.winnerAnnouncement h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.winnerName {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffd700;
+  margin: 0 0 8px 0;
+  text-shadow: 0 2px 8px rgba(255, 215, 0, 0.5);
+}
+
+.winnerText {
+  font-size: 18px;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Действия */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.playAgainButton {
+  background: linear-gradient(135deg, #4caf50, #45a049);
+  border: none;
+  color: white;
+  padding: 14px 24px;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.4);
+}
+
+.playAgainButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.5);
+}
+
+.backButton {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 10px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.backButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+/* Ожидание игроков */
+.waitingSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  padding: 0 16px; /* внутренний отступ для читаемости */
+}
+
+.waitingIcon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.waitingSection h2 {
+  font-size: 24px;
+  margin: 0 0 16px 0;
+  font-weight: 600;
+  color: var(--text-color-primary);
+}
+
+.waitingMessage {
+  font-size: 16px;
+  opacity: 0.8;
+  margin: 0 0 20px 0;
+  color: var(--text-color-secondary);
+}
+
+.loadingDots {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+}
+
+.loadingDots span {
+  width: 8px;
+  height: 8px;
+  background: var(--text-color-secondary);
+  border-radius: 50%;
+  animation: loadingDot 1.4s ease-in-out infinite both;
+}
+
+.loadingDots span:nth-child(1) { animation-delay: -0.32s; }
+.loadingDots span:nth-child(2) { animation-delay: -0.16s; }
+.loadingDots span:nth-child(3) { animation-delay: 0s; }
+
+@keyframes loadingDot {
+  0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* Диалог готовности */
+.playAgainDialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.dialogContent {
+  background: var(--secondary-bg);
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 350px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border-color);
+}
+
+.dialogContent h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  color: var(--text-primary);
+}
+
+.dialogContent p {
+  font-size: 16px;
+  margin: 0 0 24px 0;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.dialogContent p strong {
+  color: #ffd700;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.dialogActions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.readyButton {
+  background: var(--color-primary-button-bg);
+  border: none;
+  color: var(--color-primary-button-text);
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+}
+
+.readyButton:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.cancelButton {
+  background: var(--color-secondary-button-bg);
+  border: 1px solid var(--border-color);
+  color: var(--color-secondary-button-text);
+  padding: 10px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  flex: 1;
+}
+
+.cancelButton:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Адаптивные стили */
+@media (max-width: 480px) {
+  .gameContainer {
+    padding: 0; /* без отступов для устранения черных полей */
+  }
+  
+  .header {
+    padding: 12px 12px 0 12px; /* уменьшенные внутренние отступы */
+  }
+  
+  .preparingSection,
+  .rollingSection,
+  .playersSection,
+  .waitingSection {
+    padding: 0 12px; /* уменьшенные внутренние отступы */
+  }
+  
+  .finishedSection {
+    padding: 12px; /* уменьшенные отступы */
+    padding-bottom: 20px; /* обеспечиваем видимость кнопки */
+  }
+  
+  .title {
+    font-size: 24px;
+  }
+  
+  .countdownNumber {
+    font-size: 80px;
+  }
+  
+  .dice {
+    font-size: 80px;
+  }
+  
+  .playerResult .dice {
+    font-size: 50px;
+  }
+  
+  .playersGrid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 16px;
+  }
+  
+  .winnerIcon {
+    font-size: 60px;
+  }
+  
+  .winnerAnnouncement h2 {
+    font-size: 24px;
+  }
+  
+  .winnerName {
+    font-size: 20px;
+  }
+  
+  .waitingIcon {
+    font-size: 60px;
+  }
+  
+  .dialogContent {
+    padding: 24px;
+    max-width: 300px;
+  }
+  
+  .dialogContent h3 {
+    font-size: 18px;
+  }
+  
+  .dialogActions {
+    flex-direction: column;
+  }
+}
+
+/* Small phones */
+@media (max-width: 360px) {
+  .gameContainer { padding: 0; }
+  .title { font-size: 22px; }
+  .countdownNumber { font-size: 72px; }
+  .dice { font-size: 72px; }
+  .playersGrid { grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; }
+  .playAgainButton { padding: 12px 16px; font-size: 14px; }
+  .backButton { padding: 10px 16px; font-size: 13px; }
+}
+
+/* Landscape, very small heights */
+@media (orientation: landscape) and (max-height: 500px) {
+  .header { margin-bottom: 12px; }
+  .title { font-size: 20px; }
+  .playersGrid { gap: 10px; }
+  .playAgainButton, .backButton { padding: 10px 14px; font-size: 13px; }
+}
+
+/* Дополнительные мобильные правки, чтобы заголовок и ставка не перекрывали кнопку "Назад" */
+@media (max-width: 420px) {
+  .header {
+    padding-top: calc(env(safe-area-inset-top, 0px) + 6px);
+    margin-bottom: 12px;
+  }
+  .title {
+    margin: 0 0 8px 0;
+    line-height: 1.1;
+  }
+  .gameInfo {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 360px) {
+  .title { font-size: 20px; }
+  .gameInfo { font-size: 13px; }
+}
+
+.exitToLobbyButtonContainer {
+  margin-top: 20px;
+}
+
+.exitToLobbyButton {
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.exitToLobbyButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+}
