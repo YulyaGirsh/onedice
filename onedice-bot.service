@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 User=www-data
 WorkingDirectory=/var/www/onedice
-ExecStart=/usr/bin/python3 main-simple.py
+ExecStart=/usr/bin/python3 main-production.py
 Restart=always
 RestartSec=10
 Environment=BOT_TOKEN=8360132125:AAEWJyDCzwlJ_JLB9qYs_PLYYrIDGce51y0

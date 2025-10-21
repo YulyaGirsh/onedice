@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Git post-receive hook для автоматического деплоя
+# Размещается в /var/www/onedice.git/hooks/post-receive
+
+echo "🚀 OneDice - Git Hook Deploy"
+echo "============================"
+
+# Директория проекта
+PROJECT_DIR="/var/www/onedice"
+
+# Переходим в директорию проекта
+cd $PROJECT_DIR
+
+echo "📥 Pulling latest changes..."
+git pull origin main
+
+echo "🔧 Running deploy script..."
+bash server-deploy.sh
+
+echo "✅ Auto-deploy completed!"
