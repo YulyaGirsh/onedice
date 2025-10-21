@@ -4,7 +4,7 @@ echo =====================================
 
 echo.
 echo 📦 Запускаем Backend...
-start "OneDice Backend" cmd /k "cd server && npm start"
+start "OneDice Backend" cmd /k "npm run server"
 
 echo.
 echo ⏳ Ждем запуска Backend (5 секунд)...
@@ -12,7 +12,7 @@ timeout /t 5 /nobreak >nul
 
 echo.
 echo 🎨 Запускаем Frontend...
-start "OneDice Frontend" cmd /k "npm run dev"
+start "OneDice Frontend" cmd /k "npm start"
 
 echo.
 echo ⏳ Ждем запуска Frontend (3 секунды)...
@@ -20,7 +20,7 @@ timeout /t 3 /nobreak >nul
 
 echo.
 echo 🤖 Запускаем Telegram Bot...
-start "OneDice Bot" cmd /k "python main-simple.py"
+start "OneDice Bot" cmd /k "npm run bot"
 
 echo.
 echo ✅ Все сервисы запущены!

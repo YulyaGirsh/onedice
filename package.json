@@ -4,12 +4,15 @@
   "description": "Пример Telegram Mini App с использованием @twa-dev инструментов",
   "main": "index.js",
   "scripts": {
+    "start": "vite --host",
     "dev": "vite --host",
     "dev:https": "vite --host --https",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint src --ext ts,tsx --fix"
+    "lint:fix": "eslint src --ext ts,tsx --fix",
+    "server": "cd server && npm start",
+    "bot": "python main-simple.py"
   },
   "dependencies": {
     "@lottiefiles/dotlottie-react": "^0.14.4",
