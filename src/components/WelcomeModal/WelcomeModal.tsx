@@ -14,9 +14,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ visible, onClose }) => {
   const [gifLoaded, setGifLoaded] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [countdown, setCountdown] = useState(5);
-  const [canClose, setCanClose] = useState(false);
-  const [showTimer, setShowTimer] = useState(true);
+  const [canClose, setCanClose] = useState(true); // Сразу доступна для закрытия
   
   const webApp = useTelegramWebApp();
   const { currentTheme } = useTheme();
@@ -26,27 +24,10 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ visible, onClose }) => {
       setIsVisible(true);
       setIsClosing(false);
       setGifLoaded(false);
-      setCountdown(5);
-      setCanClose(false);
+      setCanClose(true); // Кнопка сразу активна
       document.body.classList.add('modal-open');
-      
-      // Запускаем отсчет
-      const timer = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev <= 1) {
-            setCanClose(true);
-            setShowTimer(false);
-            clearInterval(timer);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-
-      return () => {
-        clearInterval(timer);
-        document.body.classList.remove('modal-open');
-      };
+    } else {
+      document.body.classList.remove('modal-open');
     }
   }, [visible]);
 
@@ -98,18 +79,13 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ visible, onClose }) => {
 
         <div className={styles.buttonContainer}>
           <button 
-            className={`${styles.closeButton} ${showTimer ? styles.withTimer : ''}`}
+            className={styles.closeButton}
             onClick={handleClose}
             disabled={!canClose}
           >
             <span className={styles.buttonText}>
               {t('common.ok')}
             </span>
-            {showTimer && (
-              <span className={styles.timer}>
-                {countdown}
-              </span>
-            )}
           </button>
         </div>
       </div>

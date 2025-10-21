@@ -162,11 +162,7 @@
   transition: all 0.3s ease;
 }
 
-.timer {
-  font-size: 16px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
+/* Timer styles removed - no longer needed */
 
 /* 📱 Адаптация для мобильных устройств */
 @media (max-width: 768px) {
