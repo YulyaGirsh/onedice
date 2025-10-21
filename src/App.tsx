@@ -29,6 +29,11 @@ import AvatarSelection from './components/AvatarSelection/AvatarSelection';
 function App() {
   const { t } = useLanguage();
   const [currentPage, setCurrentPage] = useState<PageType>('play');
+  
+  // Логирование изменений currentPage
+  useEffect(() => {
+    console.log('🔄 Current page changed to:', currentPage);
+  }, [currentPage]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [showWelcomeModal, setShowWelcomeModal] = useState(() => {
     // Проверяем, показывалась ли заставка ранее
@@ -476,8 +481,11 @@ function App() {
       <WelcomeModal
         visible={showWelcomeModal}
         onClose={() => {
+          console.log('🎉 Welcome modal closed, ensuring page is "play"');
           setShowWelcomeModal(false);
           setWelcomeModalShown(true);
+          // Убеждаемся, что страница остается 'play'
+          setCurrentPage('play');
           // Сохраняем в localStorage, что заставка была показана
           localStorage.setItem('welcomeModalShown', 'true');
           // Показываем выбор аватарки только для новых пользователей
