@@ -1,5 +1,7 @@
 import asyncio
 import os
+import subprocess
+from datetime import datetime
 from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
@@ -14,6 +16,29 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 # Создаем экземпляры бота и диспетчера
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
+
+def auto_push_to_github():
+    """Автоматический пуш изменений на GitHub"""
+    try:
+        # Добавляем все изменения
+        subprocess.run(['git', 'add', '.'], check=True, capture_output=True)
+        
+        # Получаем текущее время
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        # Делаем коммит
+        subprocess.run(['git', 'commit', '-m', f'Auto-commit: {timestamp}'], 
+                      check=True, capture_output=True)
+        
+        # Пушим на GitHub
+        subprocess.run(['git', 'push', 'origin', 'main'], 
+                      check=True, capture_output=True)
+        
+        print(f"✅ Auto-push successful: {timestamp}")
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Auto-push failed: {e}")
+    except Exception as e:
+        print(f"❌ Unexpected error during auto-push: {e}")
 
 @dp.message(Command("start"))
 async def start_command(message: types.Message):
@@ -49,6 +74,10 @@ async def start_command(message: types.Message):
 async def main():
     """Главная функция для запуска бота"""
     print("Бот OneDice запущен!")
+    
+    # Автоматический пуш на GitHub при запуске
+    auto_push_to_github()
+    
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
