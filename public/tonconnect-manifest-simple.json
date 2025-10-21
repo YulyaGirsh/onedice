@@ -1,0 +1,15 @@
+{
+  "url": "https://onedice.ru",
+  "name": "OneDice - Игра в кости на TON",
+  "iconUrl": "https://onedice.ru/icon.svg",
+  "termsOfUseUrl": "https://onedice.ru/terms.html",
+  "privacyPolicyUrl": "https://onedice.ru/privacy.html",
+  "features": [
+    {
+      "name": "ton_addr"
+    },
+    {
+      "name": "ton_proof"
+    }
+  ]
+}

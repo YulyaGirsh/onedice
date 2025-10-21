@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>OneDice - Игра в кости на TON</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https: wss: http://localhost:4000 http://127.0.0.1:4000 https://localhost:4000; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-ancestors https://*.telegram.org https://web.telegram.org https://web.telegram.im; object-src 'none'; base-uri 'self';">
+    
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- TON Connect -->
+    <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/index.iife.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--tg-theme-bg-color, #1a1a1a);
+            color: var(--tg-theme-text-color, #ffffff);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: var(--tg-theme-hint-color, #999);
+            font-size: 1.1rem;
+        }
+        
+        .game-section {
+            background: var(--tg-theme-secondary-bg-color, #2a2a2a);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .dice-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .dice {
+            width: 80px;
+            height: 80px;
+            background: var(--tg-theme-button-color, #2481cc);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .dice:hover {
+            transform: scale(1.1);
+        }
+        
+        .dice.rolling {
+            animation: roll 0.5s ease-in-out;
+        }
+        
+        @keyframes roll {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(90deg); }
+            50% { transform: rotate(180deg); }
+            75% { transform: rotate(270deg); }
+        }
+        
+        .result {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 20px 0;
+            min-height: 30px;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--tg-theme-button-color, #2481cc);
+            color: var(--tg-theme-button-text-color, #ffffff);
+        }
+        
+        .btn-secondary {
+            background: var(--tg-theme-secondary-bg-color, #2a2a2a);
+            color: var(--tg-theme-text-color, #ffffff);
+            border: 1px solid var(--tg-theme-hint-color, #999);
+        }
+        
+        .btn:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .wallet-section {
+            background: var(--tg-theme-secondary-bg-color, #2a2a2a);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .wallet-info {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .wallet-address {
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--tg-theme-hint-color, #999);
+            word-break: break-all;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+            background: var(--tg-theme-bg-color, #1a1a1a);
+            border-radius: 8px;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--tg-theme-button-color, #2481cc);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--tg-theme-hint-color, #999);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: var(--tg-theme-hint-color, #999);
+        }
+        
+        .links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .link {
+            color: var(--tg-theme-button-color, #2481cc);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .link:hover {
+            text-decoration: underline;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--tg-theme-hint-color, #999);
+            border-top: 3px solid var(--tg-theme-button-color, #2481cc);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error {
+            color: #ff6b6b;
+            text-align: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255, 107, 107, 0.1);
+            border-radius: 8px;
+        }
+        
+        .success {
+            color: #51cf66;
+            text-align: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(81, 207, 102, 0.1);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🎲</div>
+            <h1>OneDice</h1>
+            <p class="subtitle">Игра в кости на TON</p>
+        </div>
+        
+        <div class="game-section">
+            <h2 class="section-title">Бросок костей</h2>
+            <div class="dice-container">
+                <div class="dice" id="dice1">🎲</div>
+                <div class="dice" id="dice2">🎲</div>
+            </div>
+            <div class="result" id="result"></div>
+            <div class="buttons">
+                <button class="btn btn-primary" id="rollBtn" onclick="rollDice()">Бросить кости</button>
+                <button class="btn btn-secondary" id="resetBtn" onclick="resetGame()">Сбросить</button>
+            </div>
+        </div>
+        
+        <div class="wallet-section">
+            <h2 class="section-title">TON Кошелек</h2>
+            <div class="wallet-info" id="walletInfo">
+                <p>Подключите TON кошелек для игры</p>
+                <button class="btn btn-primary" onclick="connectWallet()">Подключить кошелек</button>
+            </div>
+            <div class="stats" id="stats" style="display: none;">
+                <div class="stat-item">
+                    <div class="stat-value" id="balance">0</div>
+                    <div class="stat-label">TON</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="gamesPlayed">0</div>
+                    <div class="stat-label">Игр</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Загрузка...</p>
+        </div>
+        
+        <div class="footer">
+            <p>🎮 Играйте на TON и выигрывайте реальные деньги!</p>
+            <div class="links">
+                <a href="https://onedice.ru/" class="link">Приложение</a>
+                <a href="http://t.me/onedices" class="link">Канал</a>
+                <a href="http://t.me/myonedice" class="link">Чат</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Telegram Web App инициализация
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+        
+        // TON Connect инициализация
+        let tonConnect = null;
+        let wallet = null;
+        
+        // Инициализация TON Connect
+        async function initTonConnect() {
+            try {
+                tonConnect = new TonConnect.TonConnect({
+                    manifestUrl: 'https://onedice.ru/tonconnect-manifest.json'
+                });
+                
+                // Проверяем, есть ли уже подключенный кошелек
+                const wallets = await tonConnect.getWallets();
+                if (wallets.length > 0) {
+                    const connectedWallet = await tonConnect.connect({ walletsList: wallets });
+                    if (connectedWallet) {
+                        wallet = connectedWallet;
+                        updateWalletUI();
+                    }
+                }
+            } catch (error) {
+                console.error('TON Connect initialization error:', error);
+            }
+        }
+        
+        // Подключение кошелька
+        async function connectWallet() {
+            try {
+                showLoading(true);
+                
+                if (!tonConnect) {
+                    await initTonConnect();
+                }
+                
+                const wallets = await tonConnect.getWallets();
+                if (wallets.length === 0) {
+                    showError('Нет доступных кошельков');
+                    return;
+                }
+                
+                const connectedWallet = await tonConnect.connect({ walletsList: wallets });
+                if (connectedWallet) {
+                    wallet = connectedWallet;
+                    updateWalletUI();
+                    showSuccess('Кошелек подключен!');
+                }
+            } catch (error) {
+                console.error('Wallet connection error:', error);
+                showError('Ошибка подключения кошелька');
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        // Обновление UI кошелька
+        function updateWalletUI() {
+            if (wallet) {
+                document.getElementById('walletInfo').innerHTML = `
+                    <p>Кошелек подключен</p>
+                    <div class="wallet-address">${wallet.account.address}</div>
+                `;
+                document.getElementById('stats').style.display = 'grid';
+                // Здесь можно добавить получение баланса
+            }
+        }
+        
+        // Игра в кости
+        let gameState = {
+            dice1: 0,
+            dice2: 0,
+            total: 0,
+            gamesPlayed: 0
+        };
+        
+        function rollDice() {
+            const dice1 = document.getElementById('dice1');
+            const dice2 = document.getElementById('dice2');
+            const result = document.getElementById('result');
+            const rollBtn = document.getElementById('rollBtn');
+            
+            // Анимация броска
+            dice1.classList.add('rolling');
+            dice2.classList.add('rolling');
+            rollBtn.disabled = true;
+            
+            setTimeout(() => {
+                // Генерируем случайные числа
+                gameState.dice1 = Math.floor(Math.random() * 6) + 1;
+                gameState.dice2 = Math.floor(Math.random() * 6) + 1;
+                gameState.total = gameState.dice1 + gameState.dice2;
+                gameState.gamesPlayed++;
+                
+                // Обновляем UI
+                dice1.textContent = gameState.dice1;
+                dice2.textContent = gameState.dice2;
+                result.textContent = `Результат: ${gameState.total}`;
+                
+                // Убираем анимацию
+                dice1.classList.remove('rolling');
+                dice2.classList.remove('rolling');
+                rollBtn.disabled = false;
+                
+                // Обновляем статистику
+                document.getElementById('gamesPlayed').textContent = gameState.gamesPlayed;
+                
+                // Показываем результат
+                if (gameState.total === 12) {
+                    showSuccess('Джекпот! Выпало 12!');
+                } else if (gameState.total >= 10) {
+                    showSuccess('Отличный результат!');
+                } else if (gameState.total <= 3) {
+                    showError('Не повезло...');
+                }
+            }, 500);
+        }
+        
+        function resetGame() {
+            gameState = {
+                dice1: 0,
+                dice2: 0,
+                total: 0,
+                gamesPlayed: 0
+            };
+            
+            document.getElementById('dice1').textContent = '🎲';
+            document.getElementById('dice2').textContent = '🎲';
+            document.getElementById('result').textContent = '';
+            document.getElementById('gamesPlayed').textContent = '0';
+            
+            clearMessages();
+        }
+        
+        // Утилиты
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+        
+        function showError(message) {
+            clearMessages();
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error';
+            errorDiv.textContent = message;
+            document.querySelector('.container').appendChild(errorDiv);
+            
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 3000);
+        }
+        
+        function showSuccess(message) {
+            clearMessages();
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success';
+            successDiv.textContent = message;
+            document.querySelector('.container').appendChild(successDiv);
+            
+            setTimeout(() => {
+                successDiv.remove();
+            }, 3000);
+        }
+        
+        function clearMessages() {
+            const messages = document.querySelectorAll('.error, .success');
+            messages.forEach(msg => msg.remove());
+        }
+        
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            initTonConnect();
+            
+            // Настройка кнопки "Назад" в Telegram
+            if (tg.BackButton) {
+                tg.BackButton.show();
+                tg.BackButton.onClick(() => {
+                    tg.close();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
