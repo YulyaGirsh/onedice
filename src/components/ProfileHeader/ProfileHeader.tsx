@@ -4,6 +4,7 @@ import { useGameData } from '../../hooks/useGameData';
 import { useBalance } from '../../hooks/useBalance';
 import { useLanguage } from '../../hooks/useLanguage';
 import { WalletConnect } from '../WalletConnect';
+import AvatarSelector from '../AvatarSelector';
 import { IoSettingsOutline, IoAdd } from 'react-icons/io5';
 import styles from './ProfileHeader.module.css';
 import { apiService } from '../../services/api';
@@ -26,6 +27,8 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   const { balance, connected, loading } = useBalance();
   const [headerRating, setHeaderRating] = useState<number>(playerRating.rating || 0);
   const [userAvatar, setUserAvatar] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string>('');
+  const [showAvatarSelector, setShowAvatarSelector] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo>({
     firstName: t('common.player'),
     lastName: '',
@@ -38,22 +41,26 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   useEffect(() => {
     // Загружаем данные пользователя из Telegram WebApp
     if (user) {
+      const firstName = user.first_name || t('common.player');
       setUserInfo({
-        firstName: user.first_name || t('common.player'),
+        firstName,
         lastName: user.last_name || '',
         username: user.username || '',
         photoUrl: user.photo_url || ''
       });
+      setUserName(firstName);
     } else if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
       const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
+      const firstName = telegramUser.first_name || t('common.player');
       setUserInfo({
-        firstName: telegramUser.first_name || t('common.player'),
+        firstName,
         lastName: telegramUser.last_name || '',
         username: telegramUser.username || '',
         photoUrl: telegramUser.photo_url || ''
       });
+      setUserName(firstName);
     }
-  }, [user]);
+  }, [user, t]);
 
   // Загружаем аватарку пользователя
   useEffect(() => {
@@ -90,18 +97,40 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
     return () => { window.removeEventListener('storage', onStorage); if (es) es.close(); clearInterval(interval); };
   }, [user?.id]);
 
+  const handleProfileClick = () => {
+    setShowAvatarSelector(true);
+  };
+
+  const handleSaveProfile = async (avatar: string, name: string) => {
+    const userId = (user?.id ?? window.Telegram?.WebApp?.initDataUnsafe?.user?.id)?.toString();
+    if (!userId) return;
+
+    try {
+      await apiService.updateUserProfile(userId, name, avatar);
+      setUserAvatar(avatar);
+      setUserName(name);
+      setUserInfo(prev => ({
+        ...prev,
+        firstName: name
+      }));
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      throw error;
+    }
+  };
+
   const fullName = `${userInfo.firstName} ${userInfo.lastName}`.trim();
-  const displayName = fullName || (userInfo.username ? `@${userInfo.username}` : t('common.player'));
+  const displayName = userName || fullName || (userInfo.username ? `@${userInfo.username}` : t('common.player'));
 
   return (
     <div className={styles.profileHeader}>
       <div className={styles.profileLeft}>
-        <div className={styles.profileAvatar} onClick={onProfileClick}>
+        <div className={styles.profileAvatar} onClick={handleProfileClick}>
           {userAvatar ? (
-            <img src={`/img/ava/${userAvatar}.jpg`} alt="Avatar" className={styles.avatarImg} />
+            <img src={`/icons/${userAvatar}`} alt="Avatar" className={styles.avatarImg} />
           ) : (
             <span className={styles.avatarFallback}>
-              {userInfo.firstName.charAt(0)}
+              {displayName.charAt(0).toUpperCase()}
             </span>
           )}
         </div>
@@ -138,6 +167,14 @@ title={t('wallet.depositTitle')}
           <IoSettingsOutline size={22} />
         </button>
       </div>
+      
+      <AvatarSelector
+        isOpen={showAvatarSelector}
+        onClose={() => setShowAvatarSelector(false)}
+        currentAvatar={userAvatar || ''}
+        currentName={userName}
+        onSave={handleSaveProfile}
+      />
     </div>
   );
 };

@@ -640,7 +640,13 @@ app.post('/users/:id/avatar', async (req, res) => {
     }
     
     // Проверяем, что аватарка из допустимого списка
-    const allowedAvatars = ['A1', 'A2', 'A3', 'A4', 'A5'];
+    const allowedAvatars = [
+      '645DE6B9-5942-4DDF-A550-1BCC2E9F9566.png',
+      '8D6EC4E7-5439-4C2A-BE8B-DE71471A1D70.png',
+      'A4EDCA4E-8E67-42B6-8B9F-D55738ACE869.png',
+      'B08D0F0E-CF7C-4A83-B2D3-A3B425021DC9.png',
+      'D66854C4-FC9A-41B0-A04C-F5890B76292A.png'
+    ];
     if (!allowedAvatars.includes(avatar)) {
       return res.status(400).json({ error: 'Invalid avatar' });
     }
@@ -651,6 +657,38 @@ app.post('/users/:id/avatar', async (req, res) => {
   } catch (error) {
     console.error('❌ Ошибка обновления аватарки пользователя:', error);
     res.status(500).json({ error: 'Failed to update user avatar' });
+  }
+});
+
+// Новый endpoint для обновления профиля (аватар + имя)
+app.put('/users/:id/profile', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { avatar, username } = req.body;
+    
+    if (!avatar || !username) {
+      return res.status(400).json({ error: 'Avatar and username are required' });
+    }
+    
+    // Проверяем, что аватарка из допустимого списка
+    const allowedAvatars = [
+      '645DE6B9-5942-4DDF-A550-1BCC2E9F9566.png',
+      '8D6EC4E7-5439-4C2A-BE8B-DE71471A1D70.png',
+      'A4EDCA4E-8E67-42B6-8B9F-D55738ACE869.png',
+      'B08D0F0E-CF7C-4A83-B2D3-A3B425021DC9.png',
+      'D66854C4-FC9A-41B0-A04C-F5890B76292A.png'
+    ];
+    if (!allowedAvatars.includes(avatar)) {
+      return res.status(400).json({ error: 'Invalid avatar' });
+    }
+    
+    // Обновляем профиль пользователя
+    await userQueries.updateUserProfile(id, username, avatar);
+    console.log(`✅ Профиль пользователя ${id} обновлен: ${username}, ${avatar}`);
+    res.json({ message: 'Profile updated successfully', avatar, username });
+  } catch (error) {
+    console.error('❌ Ошибка обновления профиля пользователя:', error);
+    res.status(500).json({ error: 'Failed to update user profile' });
   }
 });
 

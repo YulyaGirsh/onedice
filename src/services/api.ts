@@ -158,6 +158,29 @@ class ApiService {
     }
   }
 
+  // Обновить профиль пользователя (имя и аватар)
+  async updateUserProfile(userId: string, username: string, avatar: string): Promise<void> {
+    try {
+      const response = await fetch(`${this.baseUrl}/users/${userId}/profile`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, avatar }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      // Обновляем кэш после успешного обновления
+      avatarCache.set(userId, avatar);
+    } catch (error) {
+      console.error('Ошибка обновления профиля пользователя:', error);
+      throw error;
+    }
+  }
+
   // Получение списка всех лобби
   async getLobbies(isPrivate?: boolean): Promise<CreateLobbyResponse[]> {
     try {

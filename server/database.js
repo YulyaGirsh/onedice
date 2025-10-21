@@ -285,6 +285,22 @@ const userQueries = {
     return retryOnBusy(operation);
   },
 
+  // Обновить профиль пользователя (имя и аватар)
+  updateUserProfile(userId, username, avatar) {
+    const operation = () => new Promise((resolve, reject) => {
+      const stmt = db.prepare('UPDATE users SET username = ?, avatar = ? WHERE id = ?');
+      stmt.run([username, avatar, userId], function(err) {
+        stmt.finalize();
+        if (err) {
+          reject(err);
+        } else {
+          resolve(this.changes);
+        }
+      });
+    });
+    return retryOnBusy(operation);
+  },
+
   // Получить аватарку пользователя
   getUserAvatar(userId) {
     return new Promise((resolve, reject) => {
