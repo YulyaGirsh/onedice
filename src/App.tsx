@@ -30,7 +30,12 @@ function App() {
   const { t } = useLanguage();
   const [currentPage, setCurrentPage] = useState<PageType>('play');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [showWelcomeModal, setShowWelcomeModal] = useState(true);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(() => {
+    // Проверяем, показывалась ли заставка ранее
+    const hasShownWelcome = localStorage.getItem('welcomeModalShown');
+    return !hasShownWelcome;
+  });
+  const [, setWelcomeModalShown] = useState(false);
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
@@ -446,7 +451,6 @@ function App() {
       {!isGameStarted && (
         <ProfileHeader 
           user={webApp?.initDataUnsafe?.user}
-          onProfileClick={() => { setViewingUserId(null); setCurrentPage('profile'); }}
           onDepositClick={() => setShowDepositModal(true)}
           onSettingsClick={() => setShowSettingsModal(true)}
         />
@@ -473,6 +477,9 @@ function App() {
         visible={showWelcomeModal}
         onClose={() => {
           setShowWelcomeModal(false);
+          setWelcomeModalShown(true);
+          // Сохраняем в localStorage, что заставка была показана
+          localStorage.setItem('welcomeModalShown', 'true');
           // Показываем выбор аватарки только для новых пользователей
           if (isNewUser) {
             setShowAvatarSelection(true);

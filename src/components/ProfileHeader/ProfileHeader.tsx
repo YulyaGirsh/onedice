@@ -11,14 +11,12 @@ import { apiService } from '../../services/api';
 
 interface ProfileHeaderProps {
   user?: any; // Пользователь Telegram
-  onProfileClick: () => void;
   onDepositClick: () => void;
   onSettingsClick: () => void;
 }
 
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({ 
   user, 
-  onProfileClick, 
   onDepositClick, 
   onSettingsClick 
 }) => {

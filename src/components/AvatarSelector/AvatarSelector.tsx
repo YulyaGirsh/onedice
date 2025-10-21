@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTelegramWebApp } from '../../hooks/useTelegramWebApp';
 import { useTheme } from '../../hooks/useTheme';
-import { useLanguage } from '../../hooks/useLanguage';
+// import { useLanguage } from '../../hooks/useLanguage';
 import styles from './AvatarSelector.module.css';
 
 interface AvatarSelectorProps {
@@ -19,7 +19,7 @@ const AvatarSelector: React.FC<AvatarSelectorProps> = ({
   currentName = '',
   onSave
 }) => {
-  const { t } = useLanguage();
+  // const { t } = useLanguage();
   const { currentTheme } = useTheme();
   const webApp = useTelegramWebApp();
   
