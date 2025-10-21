@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './AvatarSelection.css';
-import { useLanguage } from '../../hooks/useLanguage';
+// import { useLanguage } from '../../hooks/useLanguage'; // Пока не используется
 
 interface AvatarSelectionProps {
   onAvatarSelect: (avatarId: string) => void;
@@ -11,8 +11,8 @@ interface AvatarSelectionProps {
   };
 }
 
-const AvatarSelection: React.FC<AvatarSelectionProps> = ({ onAvatarSelect, user }) => {
-  const { t } = useLanguage();
+const AvatarSelection: React.FC<AvatarSelectionProps> = ({ onAvatarSelect }) => {
+  // const { t } = useLanguage(); // Пока не используется
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -35,15 +35,15 @@ const AvatarSelection: React.FC<AvatarSelectionProps> = ({ onAvatarSelect, user 
     }
   };
 
-  const getUserName = () => {
-    if (user?.first_name) {
-      return user.first_name;
-    }
-    if (user?.username) {
-      return user.username;
-    }
-    return 'Игрок';
-  };
+  // const getUserName = () => {
+  //   if (user?.first_name) {
+  //     return user.first_name;
+  //   }
+  //   if (user?.username) {
+  //     return user.username;
+  //   }
+  //   return 'Игрок';
+  // };
 
   return (
     <div className="avatar-selection-overlay">

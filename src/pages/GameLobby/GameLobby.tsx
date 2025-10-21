@@ -3,7 +3,7 @@ import { Game, Player } from '../../types';
 import { useTelegramWebApp } from '../../hooks/useTelegramWebApp';
 import { useLanguage } from '../../hooks/useLanguage';
 import styles from './GameLobby.module.css';
-import { FaCrown, FaHourglassHalf, FaShareSquare, FaDoorOpen, FaPlay } from 'react-icons/fa';
+import { FaHourglassHalf, FaShareSquare, FaDoorOpen } from 'react-icons/fa';
 import { apiService } from '../../services/api';
 
 import { API_BASE_URL } from '../../config/api';

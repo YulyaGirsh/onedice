@@ -88,7 +88,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
   const firstName = profileUser?.first_name || '';
   const lastName = profileUser?.last_name || '';
   const fullName = `${firstName} ${lastName}`.trim() || t('profile.player');
-  const photoUrl = profileUser?.photo_url;
+  // const photoUrl = profileUser?.photo_url; // Пока не используется
   // Вычисляем позицию пользователя на основе рейтинга
   const calculateUserPosition = (userRating: number) => {
     if (userRating >= 2000) return 150;
